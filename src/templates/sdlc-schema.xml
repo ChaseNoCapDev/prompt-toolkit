@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+SDLC Prompt Template XML Schema
+This defines the structure for XML-based prompt templates in the metaGOTHIC framework
+-->
+
+<prompt_template id="example-template" name="Example SDLC Template" version="1.0.0" author="metaGOTHIC">
+  <description>
+    Example template showing the XML schema structure for SDLC prompts
+  </description>
+  
+  <!-- Variable definitions -->
+  <variables>
+    <variable name="project_name" type="string" required="true">
+      <description>Name of the project being analyzed</description>
+    </variable>
+    <variable name="phase" type="string" required="true">
+      <description>SDLC phase (requirements, design, implementation, testing, deployment)</description>
+    </variable>
+    <variable name="complexity" type="string" default="medium">
+      <description>Project complexity level (low, medium, high)</description>
+    </variable>
+    <variable name="team_size" type="number" default="5">
+      <description>Number of team members</description>
+    </variable>
+    <variable name="features" type="array" required="false">
+      <description>List of features to implement</description>
+    </variable>
+  </variables>
+
+  <!-- Context loading strategy -->
+  <context_loading strategy="progressive">
+    <level depth="1">
+      <condition type="exists" variable="project_name" />
+      <load>project-overview.md</load>
+      <load>requirements.md</load>
+      <purpose>Basic project understanding</purpose>
+    </level>
+    
+    <level depth="2" condition_type="equals" condition_variable="phase" condition_value="implementation">
+      <load>architecture.md</load>
+      <load>api-specs.md</load>
+      <purpose>Implementation-specific context</purpose>
+    </level>
+    
+    <level depth="3" condition_type="in" condition_variable="complexity" condition_values="['high', 'enterprise']">
+      <load>performance-requirements.md</load>
+      <load>security-guidelines.md</load>
+      <purpose>Complex project considerations</purpose>
+    </level>
+  </context_loading>
+
+  <!-- Task definition with structured approach -->
+  <task_definition>
+    <objective>
+      Analyze the {{project_name}} project in the {{phase}} phase and provide structured guidance
+    </objective>
+    
+    <requirements>
+      <requirement priority="high" id="req-1">
+        Understand the current project state and requirements
+      </requirement>
+      <requirement priority="high" id="req-2" depends_on="req-1">
+        Identify potential risks and mitigation strategies
+      </requirement>
+      <requirement priority="medium" id="req-3">
+        Provide actionable recommendations for the {{phase}} phase
+      </requirement>
+    </requirements>
+    
+    <constraints>
+      <constraint>Follow established SDLC best practices</constraint>
+      <constraint>Consider team size of {{team_size}} members</constraint>
+      <constraint condition_type="equals" condition_variable="phase" condition_value="testing">
+        Ensure comprehensive test coverage strategy
+      </constraint>
+    </constraints>
+    
+    <deliverables>
+      <deliverable>Phase-specific analysis report</deliverable>
+      <deliverable>Risk assessment matrix</deliverable>
+      <deliverable>Actionable recommendation list</deliverable>
+    </deliverables>
+  </task_definition>
+
+  <!-- Thinking level guidance -->
+  <thinking_level depth="analysis" focus="systematic" duration="deep">
+    <surface>
+      Understand the immediate requirements and current state
+    </surface>
+    <analysis>
+      Examine the relationships between components, identify patterns, and assess risks
+    </analysis>
+    <strategic>
+      Consider long-term implications, scalability, and alignment with business objectives
+    </strategic>
+    <architectural>
+      Evaluate system design decisions, technology choices, and architectural patterns
+    </architectural>
+  </thinking_level>
+
+  <!-- Template inheritance -->
+  <extends>base-sdlc-template</extends>
+
+  <!-- Main content with variable interpolation -->
+  <content>
+    <![CDATA[
+# {{project_name}} - {{phase}} Phase Analysis
+
+## Project Context
+You are analyzing the **{{project_name}}** project, currently in the **{{phase}}** phase.
+
+**Team Configuration:**
+- Team Size: {{team_size}} members
+- Complexity Level: {{complexity}}
+{{#if features}}
+- Key Features: {{#each features}}
+  - {{this}}
+{{/each}}
+{{/if}}
+
+## Analysis Framework
+
+### Current Phase: {{phase}}
+{{#switch phase}}
+{{#case "requirements"}}
+Focus on requirements gathering, stakeholder analysis, and scope definition.
+{{/case}}
+{{#case "design"}}
+Focus on system architecture, component design, and technical specifications.
+{{/case}}
+{{#case "implementation"}}
+Focus on coding standards, development practices, and progress tracking.
+{{/case}}
+{{#case "testing"}}
+Focus on test strategy, quality assurance, and defect management.
+{{/case}}
+{{#case "deployment"}}
+Focus on deployment strategy, infrastructure, and go-live planning.
+{{/case}}
+{{/switch}}
+
+### Complexity Considerations
+{{#if_equals complexity "high"}}
+Given the high complexity of this project, pay special attention to:
+- Architectural scalability and maintainability
+- Risk mitigation strategies
+- Team coordination and communication
+- Integration complexity
+{{/if_equals}}
+
+## Analysis Instructions
+
+1. **Context Analysis**: Review the provided project documentation and current state
+2. **Risk Assessment**: Identify potential risks specific to the {{phase}} phase
+3. **Best Practices**: Apply SDLC best practices appropriate for {{complexity}} complexity projects
+4. **Recommendations**: Provide specific, actionable recommendations
+5. **Next Steps**: Outline clear next steps for the team
+
+## Output Format
+
+Please structure your analysis as follows:
+
+### Executive Summary
+Brief overview of current state and key findings
+
+### Detailed Analysis
+In-depth analysis of the {{phase}} phase considerations
+
+### Risk Matrix
+| Risk | Likelihood | Impact | Mitigation Strategy |
+|------|------------|--------|-------------------|
+| ... | ... | ... | ... |
+
+### Recommendations
+Prioritized list of actionable recommendations
+
+### Next Steps
+Clear action items with ownership and timelines
+
+---
+
+**Note**: This analysis should be tailored to a {{complexity}} complexity project with {{team_size}} team members.
+    ]]>
+  </content>
+
+  <!-- Metadata -->
+  <metadata>
+    <category>SDLC</category>
+    <tags>
+      <tag>analysis</tag>
+      <tag>project-management</tag>
+      <tag>{{phase}}</tag>
+    </tags>
+    <estimated_tokens>2500</estimated_tokens>
+    <last_updated>2025-05-27</last_updated>
+  </metadata>
+</prompt_template>

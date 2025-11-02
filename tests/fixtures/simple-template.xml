@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<prompt_template id="simple-test" name="Simple Test Template" version="1.0.0">
+  <description>A simple template for testing basic functionality</description>
+  
+  <variables>
+    <variable name="name" type="string" required="true">
+      <description>Name of the person</description>
+    </variable>
+    <variable name="age" type="number" required="false" default="25">
+      <description>Age of the person</description>
+    </variable>
+    <variable name="skills" type="array" required="false">
+      <description>List of skills</description>
+    </variable>
+  </variables>
+
+  <content>
+    <![CDATA[
+Hello {{name}}, you are {{age}} years old.
+
+{{#if skills}}
+Your skills include:
+{{#each skills}}
+- {{this}}
+{{/each}}
+{{/if}}
+
+{{#if_equals age "25"}}
+You are exactly 25 years old!
+{{/if_equals}}
+    ]]>
+  </content>
+
+  <metadata>
+    <category>test</category>
+    <estimated_tokens>150</estimated_tokens>
+  </metadata>
+</prompt_template>
